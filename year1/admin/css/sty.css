@@ -1,0 +1,127 @@
+* {
+padding: 0;
+margin: 0;
+
+}
+body {
+
+}
+.calculator {
+width: 300px;
+height: 300px;
+background-color: brown;
+box-shadow: 0px 0px 0px 10px #666;
+border: 5px solid brown;
+
+margin-top:18px;
+}
+#display {
+width: 300px;
+height: 50px;
+text-align: right;
+background-color: black;
+border: 3px solid white;
+font-size: 2em;
+padding:2px;
+font-family:courier new;
+left: 2px;
+top: 2px;
+color: #7fff00;
+border-radius: 10em;
+font-weight:bold;
+}
+.btnTop{
+color: white;
+background-color: #6f6f6f;
+font-size: 20px;
+margin: auto;
+width: 50px;
+height: 50px;
+border-radius:4em;
+}
+.btnNum {
+color: white;
+background-color: black;
+font-size: 20px;
+margin: auto;
+width: 50px;
+height: 50px;
+border-radius:4em;
+
+}
+.btnMath {
+color: white;
+background-color: #ff4561;
+font-size: 20px;
+margin: auto;
+width: 50px;
+height: 50px;
+border-radius:4em;
+}
+.btnOpps {
+color: white;
+background-color: #ff9933;
+font-size: 20px;
+margin: auto;
+width: 50px;
+height: 50px;
+border-radius:4em;
+}
+.parent {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    display:none;
+
+}
+
+.child {
+    position: absolute;
+    background-color: transparent;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    width: 30em;
+    height: 30em;
+z-index:10em;
+}
+._close_modal {
+    background-color: #1370bf;
+    font-size: 1.5em;
+    color: #fff;
+    padding: 7px;
+    border-radius: 1em;
+    position: absolute;
+    top: -9px;
+    right: -7px;
+    cursor: pointer;
+    height: auto;
+    width: 28px;
+    text-align: center;
+    font-weight:bold;
+}
+
+.calc{
+background-color: brown;
+padding: 4px;
+color: #fff;
+right: 0;
+bottom:0;
+position: fixed;
+cursor:pointer;
+
+}
+
+.calc a{
+background-color: brown;
+padding: 4px;
+color: #fff;
+right: 0;
+bottom:0;
+position: fixed;
+cursor:pointer;
+
+}

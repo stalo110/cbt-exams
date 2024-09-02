@@ -1,0 +1,73 @@
+.addstudent {
+    margin-right: 6px;
+}
+.addModel,.updateModel {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient( rgba(0,0,0,0.1), rgba(0,0,0,0.1));
+    z-index: 999;
+    display: none;
+    justify-content: center;
+}
+.subModel {
+    width: 50%;
+    background: #fff;
+    margin: 6rem 0;
+    border-radius:5px;
+}
+.hdModel {
+    border-bottom: 1px solid #ccc;
+    background: #3471a7;
+    padding: 0 0 0 12px;
+    margin: 0;
+    display: flex;
+    border-radius: 5px 5px 0px 0px;
+    align-items: center;
+    justify-content: space-between;
+    height: 5rem;
+}
+.hdModel h2 {
+    font-size: 20px;
+    color: #fff;
+}
+.closeadd {
+    color: #fff;
+    font-size: 30px;
+    padding: 10px 10px 0 0;
+    cursor: pointer;
+}
+
+.bdyModel input, select {
+    width: 100%;
+    height: 3rem;
+    border: 1px solid #b5afaf;
+    margin: 5px 0;
+    border-radius: 3px;
+    text-indent: 10px;
+    outline: none;
+}.moReg input, select {
+    width: 32.7%;
+    height: 3rem;
+    margin: 0px 0;
+    border-radius: 3px;
+    border: 1px solid #b5afaf;
+}
+.bdyModel .gender {
+    width: 100%;
+    height: 3rem;
+    border: 1px solid #b5afaf;
+    margin: 5px 0;
+    border-radius: 3px;
+    text-indent: 10px;
+    outline: none;
+}
+.bdyModel input[type=file] {
+    border: none;
+}
+.bdyModel {
+    margin: 12px;
+}
+.btnAddStu input {
+    width: 10rem;
+    margin: 4px;
+}
