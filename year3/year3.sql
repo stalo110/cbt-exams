@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2024 at 02:56 AM
+-- Generation Time: Nov 03, 2024 at 03:25 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,7 +72,7 @@ CREATE TABLE `class` (
 --
 
 INSERT INTO `class` (`id`, `name`) VALUES
-(4, 'year2');
+(1, 'year3');
 
 -- --------------------------------------------------------
 
@@ -223,9 +223,7 @@ CREATE TABLE `students` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `reg_no` varchar(100) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `email` varchar(225) NOT NULL,
-  `gender` varchar(255) NOT NULL DEFAULT 'female',
+  `class` varchar(225) NOT NULL,
   `class_id` int(11) NOT NULL,
   `profile_photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -234,9 +232,9 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `first_name`, `last_name`, `reg_no`, `phone`, `email`, `gender`, `class_id`, `profile_photo`) VALUES
-(1, 'stanley', 'Offor', 'MCONSA001', '0839938478', 'stalo@gmail.com', 'male', 8999000, 'uploads/FB_IMG_1673811511940.jpg'),
-(2, 'francisco', 'okoro', 'MCONSA002', '009987557', 'tetete@gmail.com', 'male', 8999000, 'uploads/5154e79f-5ca2-47fb-a8fa-1bfc3e6b51a0.jpg');
+INSERT INTO `students` (`id`, `first_name`, `last_name`, `reg_no`, `class`, `class_id`, `profile_photo`) VALUES
+(1, 'stanley', 'Offor', 'MCONSA001', 'year3', 1, 'uploads/FB_IMG_1673811511940.jpg'),
+(2, 'francisco', 'okoro', 'MCONSA002', 'year3', 1, 'uploads/5154e79f-5ca2-47fb-a8fa-1bfc3e6b51a0.jpg');
 
 -- --------------------------------------------------------
 
@@ -486,7 +484,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `students_ans`
