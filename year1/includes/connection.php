@@ -16,16 +16,16 @@ if($mysqli->connect_error){
 
     exit();
 }
-// define("ROOT_URL", "http://192.168.0.100/cbt2/year1/");
-// define("SUB_URL", "http://192.168.0.100/cbt2/");
-// define("ADMIN_ROOT_URL", "http://192.168.0.100/cbt2/year1/admin/");
+// define("ROOT_URL", "http://192.168.0.100/cbt-exams/year1/");
+// define("SUB_URL", "http://192.168.0.100/cbt-exams/");
+// define("ADMIN_ROOT_URL", "http://192.168.0.100/cbt-exams/year1/admin/");
 
-define("ROOT_URL", "http://localhost/cbt2/year1/");
-define("SUB_URL", "http://localhost/cbt2/year1/");
-define("ADMIN_ROOT_URL", "http://localhost/cbt2/year1/admin/");
+define("ROOT_URL", "http://localhost/cbt-exams/year1/");
+define("SUB_URL", "http://localhost/cbt-exams/year1/");
+define("ADMIN_ROOT_URL", "http://localhost/cbt-exams/year1/admin/");
 
-// define("ROOT_URL", "http://localhost/cbt2/year1/");
-// define("ADMIN_ROOT_URL", "http://localhost/cbt2/year1/admin/");
+// define("ROOT_URL", "http://localhost/cbt-exams/year1/");
+// define("ADMIN_ROOT_URL", "http://localhost/cbt-exams/year1/admin/");
 
 
 
