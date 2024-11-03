@@ -54,96 +54,105 @@ $resultsQuery = mysqli_query($connection, $sql);
                 </form>
                 </p>
             </div>
-
             <?php
-function upload_svg()
-{
-    global $connection;
-    if (isset($_POST['import'])) {
-        $classId = $_POST['ClassId'];
-        $class = $_POST['class'];
-        
-        // Initialize profile photo and gender as defaults, or take values from the form if applicable
-        $gender = "female";
+                        function upload_csv()
+                    {
+                        global $connection;
+                        if (isset($_POST['import'])) {
+                            $classId = $_POST['ClassId'];
+                            $class = $_POST['class'];
+                            $profile = "passport.jpg";
 
-        if ($_FILES['file']['name']) {
-            // Check if the uploaded file is an SVG
-            $filename = explode('.', $_FILES['file']['name']);
-            $fileExtension = strtolower(end($filename));
+                            
 
-            if ($fileExtension === 'svg') {
-                // Set the destination for uploaded SVG files
-                $uploadDirectory = 'uploads/';
-                $uniqueFilename = uniqid() . '_' . $_FILES['file']['name'];
-                $filePath = $uploadDirectory . $uniqueFilename;
+                            if ($_FILES['file']['name']) {
+                                $filename = explode('.', $_FILES['file']['name']);
+                                if ($filename[1] == 'csv') {
 
-                // Move the file to the upload directory
-                if (move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
-                    // Insert SVG details into the students table
-                    $query = "INSERT INTO students (first_name, last_name, reg_no, class_id, profile_photo, gender) VALUES (?, ?, ?, ?, ?, ?)";
-                    $stmt = mysqli_prepare($connection, $query);
+                                    $handle = fopen($_FILES['file']['tmp_name'], "r");
+                                    $row = 1;
+                    //                $all = fgetcsv($handle);
 
-                    // Sample data for testing; you may want to collect this from the form
-                    $first_name = "SampleFirstName";
-                    $last_name = "SampleLastName";
-                    $reg_no = "SampleRegNo";
 
-                    mysqli_stmt_bind_param($stmt, 'sssiss', $first_name, $last_name, $reg_no, $classId, $filePath, $gender);
+                                    while ($data = fgetcsv($handle)) {
 
-                    mysqli_stmt_execute($stmt);
+                                        $first_name = mysqli_real_escape_string($connection, $data[0]);
+                                        $last_name = mysqli_real_escape_string($connection, $data[1]);
+                                        $reg_no = mysqli_real_escape_string($connection, $data[2]);
 
-                    if (!$stmt) {
-                        die("QUERY FAILED" . mysqli_error($connection));
-                    } else {
-                        echo "<div class='row alert-success text-center'>
-                                <p>Success! The SVG has been uploaded and added to the student list.</p>
-                              </div>";
+
+                                        if ($row == 1) {
+                                            if ($first_name != "First Name") {
+                    //                            print_r($item1);
+                                                $errors[] = "The first Column Of Your CSV File is not <strong>First Name</strong>";
+                                            }
+                                            if($reg_no != "Reg Number"){
+                                                $errors[] = "The Third Column Of Your CSV File is not <strong>Reg No</strong>";
+                                            }
+
+                                        } else {
+
+
+                                            if (empty($errors) === true && empty($_POST) === false) {
+
+                                                    if (user_exit('students', 'reg_no', $reg_no) > 0) {
+
+                                                    echo "<div class='row alert alert-warning'>
+                                                <p>A duplicate Reg No : <strong>$reg_no</strong> detected and removed from the list</p>
+                                            </div>";
+
+                                                } else{
+                                                    $query = "INSERT INTO students(first_name, last_name, reg_no, class, class_id, profile_photo) VALUES(?,?,?,?,?,?)";
+
+                                                    $stmt = mysqli_prepare($connection, $query);
+
+                                                    mysqli_stmt_bind_param($stmt, 'ssssis', $first_name, $last_name, $reg_no, $class, $classId, $profile);
+
+                                                    mysqli_stmt_execute($stmt);
+
+                                                    
+
+                                                    if (!$stmt) {
+                                                        die("QUERY FAILED" . mysqli_error($connection));
+                                                    }
+                                                }
+
+
+                                            }
+
+
+                                        }
+
+                                        ++$row;
+
+
+                                    }
+                                    fclose($handle);
+
+                                } else {
+                                    $errors[] = "The File You Selected is Not A CSV file";
+
+                                }
+                                if (empty($errors)) {
+                                    echo "<div class='row alert-success text-center'>
+                                                    <p>Success!!! <br>
+
+                                                        You Have Successfully Uploaded The Students Lists <br>
+
+
+
+                                                    </p>
+
+                                                </div><br>";
+                                } else{
+
+                                    echo output_errors($errors);
+                                }
+                            }
+                        }
+
                     }
-                } else {
-                    echo "<div class='row alert alert-warning'>
-                            <p>Failed to upload the SVG file. Please try again.</p>
-                          </div>";
-                }
-            } else {
-                echo "<div class='row alert alert-warning'>
-                        <p>The file you selected is not an SVG file. Please upload an SVG.</p>
-                      </div>";
-            }
-        }
-    }
-}
-?>
-
-            <!-- HTML Part -->
-            <div>
-                <?php upload_svg() ?>
-            </div>
-            <h4>Upload SVG Profile</h4>
-            <form class="form-inline row" method="post" enctype="multipart/form-data" role="form">
-                <div class="form-group col-xs-4">
-                    <input type="file" class="form-control" name="file" accept=".svg">
-                </div>
-                <div class="form-group col-xs-4">
-                    <select name="class" id="class" class="form-control" style="margin:10px">
-                        <option value="disabled">Class</option>
-                        <option value="year1">YEAR1</option>
-                    </select>
-                    <select name="ClassId" class="form-control" style="margin:10px">
-                        <option value="disabled">Select</option>
-                        <?php 
-                $sql = "SELECT * FROM class";
-                $resultsQuery2 = mysqli_query($connection, $sql);
-                while ($rowClas = mysqli_fetch_assoc($resultsQuery2)) {
-                    echo "<option value='{$rowClas['id']}'>{$rowClas['id']}_{$rowClas['name']}</option>";
-                }
-            ?>
-                    </select>
-                </div>
-                <div class="form-group col-xs-4">
-                    <input type="submit" class="col-xs-4 btn btn-primary" name="import" value="Upload SVG">
-                </div>
-            </form>
-
+                    ?>
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -226,6 +235,7 @@ function upload_svg()
                                         <th>Seat No</th>
                                         <th>Full Name</th>
                                         <th>Reg No</th>
+                                        <th>Class</th>
                                         <th>Action1</th>
                                         <th>Action2</th>
                                     </tr>
@@ -249,7 +259,7 @@ while($st_row = mysqli_fetch_array($select_students_query)) {
     $st_last_name = $st_row['last_name'];
     $full_name = "$st_first_name $st_last_name";
     $st_reg_no = $st_row['reg_no'];
-    $st_phone = $st_row['phone'];
+    $st_class = $st_row['class'];
     $st_name = "$st_first_name $st_last_name";
 
 
@@ -276,10 +286,11 @@ while($st_row = mysqli_fetch_array($select_students_query)) {
             $cl_name = $cl_row['name'];
         ?>
 
-                                        <td><?php echo $cl_name; ?></td>
+
                                         <?php } ?>
                                         <td><?php echo $full_name; ?></td>
                                         <td><?php echo $st_reg_no; ?></td>
+                                        <td><?php echo $st_class; ?></td>
                                         <td>
                                             <form action="uploadPhoto.php" method="POST" enctype="multipart/form-data">
                                                 <input type="hidden" name="student_id"
@@ -324,12 +335,11 @@ while($st_row = mysqli_fetch_array($select_students_query)) {
         header("Location: students.php");
     }
 
-    if(isset($_GET['deleteAll'])){
-        $the_st_id = sanitize($_GET['deleteAll']);
-
-        $query = "DELETE FROM students ";
+    if (isset($_GET['deleteAll'])) {
+        $query = "DELETE FROM students";
         $delete_query = mysqli_query($connection, $query);
         header("Location: students.php");
+        exit(); // Stops further execution after redirect
     }
 
 if(isset($_POST['updateSubmit'])){
@@ -340,10 +350,8 @@ $regNo = $_POST['regNo'];
 $classId = $_POST['ClassId'];
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
-$tel = "090";
 $class = $_POST['class'];
 $profile = "passport.jpg";
-$gender = "female";
 
 $myFname = strtoupper($fname);
 $myLname = strtoupper($lname);
@@ -351,7 +359,7 @@ $myPrefix = strtoupper($prefix);
 
 $myReg=$myPrefix."/".$session."/".$regNo;
 
-        $query = "UPDATE students SET first_name='$myFname',last_name='$myLname',reg_no='$myReg',phone='$tel',class='$class',profile_pic='$profile',gender='$gender',class_id='$classId' WHERE id= {$the_st_id}";
+        $query = "UPDATE students SET first_name='$myFname',last_name='$myLname',reg_no='$myReg',class='$class',profile_photo='$profile',class_id='$classId' WHERE id= {$the_st_id}";
         $update_query = mysqli_query($connection, $query);
     
     }
@@ -419,17 +427,19 @@ $myReg=$myPrefix."/".$session."/".$regNo;
                         <label for="reg">Reg Number</label><br>
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="text" placeholder="Add Prefix-eg: SJGSSA" class="form-control" required
-                                    name="regHd" title="Add your school prefix eg: SJGSSSA" id="reg">
+                                <input type="text" placeholder="Add Prefix-eg: MCONSA/NUR" class="form-control" required
+                                    name="regHd" title="Add your school prefix eg: MCONSA/NUR" id="reg">
                             </div>
                             <div class="col-md-4">
                                 <select class="form-control" name="session" id="session">
                                     <option value="disabled">Session</option>
-                                    <option value="2019">2024</option>
-                                    <option value="2020">2025</option>
-                                    <option value="2021">2026</option>
-                                    <option value="2022">2027</option>
-                                    <option value="2023">2028</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -464,10 +474,7 @@ $myReg=$myPrefix."/".$session."/".$regNo;
                         <label for="class">Class</label>
                         <select name="class" id="class" class="form-control">
                             <option value="disabled">Class</option>
-                            <option value="YEAR1">YEAR1</option>
-                            <option value="YEAR2">YEAR2</option>
-                            <option value="YEAR3">YEAR3</option>
-                            <option value="YEAR4">YEAR4</option>
+                            <option value="year1">YEAR1</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -487,10 +494,8 @@ $regNo = $_POST['regNo'];
 $classId = $_POST['ClassId'];
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
-$tel = "090";
 $class = $_POST['class'];
 $profile = "passport.jpg";
-$gender = "female";
 
 $myFname = strtoupper($fname);
 $myLname = strtoupper($lname);
@@ -498,7 +503,7 @@ $myPrefix = strtoupper($prefix);
 
 $myReg=$myPrefix."/".$session."/".$regNo;
 
-$sql = "INSERT INTO `students`( `first_name`, `last_name`, `reg_no`, `phone`, `class`, `profile_pic`, `gender`, `class_id`) VALUES ('$myFname','$myLname','$myReg','$tel','$class','$profile','$gender','$classId')";
+$sql = "INSERT INTO `students`( `first_name`, `last_name`, `reg_no`, `class`, `profile_photo`, `class_id`) VALUES ('$myFname','$myLname','$myReg','$class','$profile','$classId')";
 $resultsQueryAdd = mysqli_query($connection, $sql);
 if($resultsQueryAdd){
  header("Location: students.php?status=success");
@@ -538,7 +543,7 @@ $(document).ready(function() {
 
         $(".modal_alldelete_link").attr("href", delete_url);
 
-        $("#myModal").modal('show');
+        $("#basicModal").modal('show');
 
 
     });
