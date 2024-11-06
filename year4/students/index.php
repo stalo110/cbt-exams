@@ -38,7 +38,7 @@
                                                 echo '<img class="img-responsive" width="100%" src="'.$default_photo.'">';
                                             } else {  
                                                 $full_photo_path = '../admin/' . $profile_photo;
-                                                echo '<img class="student-img" height="100" width="100" style="border-radius: 50%" src="'. $full_photo_path .'">';
+                                                echo '<img class="student-img" height="180" width="180" style="border-radius: 50%" src="'. $full_photo_path .'">';
                                             } 
                                         ?>
 

@@ -12,6 +12,21 @@ if (session_status() === PHP_SESSION_NONE) {
 // Your existing code...
 $reg_no = $_SESSION['reg_no'];
 
+// Initialize a variable to store the full name
+$full_name = "";
+
+// Fetch the student's full name from the database
+$name_query = "SELECT first_name, last_name FROM students WHERE reg_no = ?";
+$name_stmt = $connection->prepare($name_query);
+$name_stmt->bind_param("s", $reg_no);
+$name_stmt->execute();
+$name_result = $name_stmt->get_result();
+$name_row = $name_result->fetch_assoc();
+
+if ($name_row) {
+    $full_name = $name_row['first_name'] . ' ' . $name_row['last_name'];
+}
+
 // Check the latest request status
 $query = "SELECT status FROM login_requests WHERE reg_no = ? ORDER BY request_time DESC LIMIT 1";
 $stmt = $connection->prepare($query);
@@ -20,10 +35,13 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
+$isApproved = false;
+$message = "Please wait for Admin to approve your Login.";  
+
 if ($row) {  
   if ($row['status'] == 'Approved') {  
-      header("Location: students/index.php");  
-      exit();  
+    $isApproved = true;
+    $message = "Admin has approved your login."; 
   } elseif ($row['status'] == 'Pending') {  
       $message = "Your request is still pending approval.";  
   } else {  
@@ -38,7 +56,7 @@ if ($row) {
   header("Location: pending_approval.php");  
   exit();  
 }  
-?>  
+?>
 
 
 <?php
@@ -48,56 +66,65 @@ ini_set('display_errors', 1);
 <!DOCTYPE html>
 <html lang="en">
 <!-- subscribe.html  21 Nov 2019 04:05:02 GMT -->
+
 <head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>MCONSA Dashboard</title>
-  <!-- General CSS Files -->
-  <link rel="stylesheet" href="assets/css/app.min.css">
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <!-- Custom style CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
-  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>MCONSA Dashboard</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="assets/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
 </head>
 
 <body>
-  <div class="loader"></div>
-  <div id="app">
-    <section class="section">
-      <div class="container mt-5">
-      <a href="../index.php" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
-        <div class="row">
-          <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
-            <div class="login-brand">
-                <!-- <img height="45" src='images/<?php if(isset($_SESSION['institution_name'])){ echo $_SESSION['institution_logo']; } ?>'><?php if(isset($_SESSION['institution_name'])){ echo $_SESSION['institution_name']; } ?> -->
-                <h2>Computer Based Test </h2>
-                <p>Please wait for Admin to approve your Login</p>
+    <div class="loader"></div>
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <a href="../index.php" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
+                <div class="row">
+                    <div
+                        class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+                        <div class="login-brand">
+                            <!-- <img height="45" src='images/<?php if(isset($_SESSION['institution_name'])){ echo $_SESSION['institution_logo']; } ?>'><?php if(isset($_SESSION['institution_name'])){ echo $_SESSION['institution_name']; } ?> -->
+                            <h2>Hello <?php echo htmlspecialchars($full_name); ?></h2>
+                            <!-- <p><?php echo $message; ?></p> -->
 
-                <?php if (!empty($message)) { echo "<p style='color:red; font-size:20px; font-weight:800; padding-top:80px;'>$message</p>"; } ?>  
+                            <?php if (!empty($message)) { echo "<p style='color:red; font-size:20px; font-weight:800; padding-top:80px;'>$message</p>"; } ?>
+
+                            <!-- Conditionally display the "Go to Dashboard" button if approved -->
+                            <?php if ($isApproved): ?>
+                            <a href="students/index.php" class="btn btn-primary mt-3">Go to Dashboard</a>
+                            <?php endif; ?>
+
+                        </div>
+
+
+
+                        <div class="simple-footer" style='margin-top:300px'>
+                            Copyright &copy; Stalo Technology 2024
+                        </div>
+                    </div>
+                </div>
             </div>
-
-          
-
-            <div class="simple-footer" style='margin-top:300px'>
-              Copyright &copy; Stalo Technology 2024
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-  <!-- General JS Scripts -->
-  <script src="assets/js/app.min.js"></script>
-  <!-- JS Libraies -->
-  <!-- Page Specific JS File -->
-  <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
-  <!-- Custom JS File -->
-  <script src="assets/js/custom.js"></script>
+        </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="assets/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <!-- Page Specific JS File -->
+    <!-- Template JS File -->
+    <script src="assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="assets/js/custom.js"></script>
 </body>
 
 
 <!-- subscribe.html  21 Nov 2019 04:05:02 GMT -->
+
 </html>
