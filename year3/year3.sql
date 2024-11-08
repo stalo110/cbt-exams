@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2024 at 03:25 PM
+-- Generation Time: Nov 08, 2024 at 07:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -146,7 +146,8 @@ CREATE TABLE `login_requests` (
 --
 
 INSERT INTO `login_requests` (`id`, `reg_no`, `request_time`, `status`) VALUES
-(3, 'MCONSA001', '2024-08-29 00:51:22', 'Approved');
+(3, 'MCONSA001', '2024-08-29 00:51:22', 'Approved'),
+(4, 'MCONSA/NUR/2023/3', '2024-11-03 14:49:03', 'Approved');
 
 -- --------------------------------------------------------
 
@@ -191,6 +192,15 @@ CREATE TABLE `scores` (
   `overAll` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `scores`
+--
+
+INSERT INTO `scores` (`id`, `student_id`, `course_id`, `course_title`, `score`, `overAll`) VALUES
+(1, 1, 501, 'Mathematics', 85, 100),
+(2, 2, 502, 'Science', 90, 100),
+(3, 33, 503, 'English', 78, 100);
+
 -- --------------------------------------------------------
 
 --
@@ -234,7 +244,8 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `first_name`, `last_name`, `reg_no`, `class`, `class_id`, `profile_photo`) VALUES
 (1, 'stanley', 'Offor', 'MCONSA001', 'year3', 1, 'uploads/FB_IMG_1673811511940.jpg'),
-(2, 'francisco', 'okoro', 'MCONSA002', 'year3', 1, 'uploads/5154e79f-5ca2-47fb-a8fa-1bfc3e6b51a0.jpg');
+(2, 'francisco', 'okoro', 'MCONSA002', 'year3', 1, 'uploads/5154e79f-5ca2-47fb-a8fa-1bfc3e6b51a0.jpg'),
+(33, 'OKONKWO', 'OKON', 'MCONSA/NUR/2023/3', 'year3', 1, 'uploads/head-removebg-preview.png');
 
 -- --------------------------------------------------------
 
@@ -454,7 +465,7 @@ ALTER TABLE `exam_time`
 -- AUTO_INCREMENT for table `login_requests`
 --
 ALTER TABLE `login_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `questions`
@@ -472,7 +483,7 @@ ALTER TABLE `registered_exams`
 -- AUTO_INCREMENT for table `scores`
 --
 ALTER TABLE `scores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -484,7 +495,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `students_ans`
