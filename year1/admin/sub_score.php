@@ -13,9 +13,10 @@ if(isset($_GET['id'])){
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                  <div class="card-header">
-                  <h4><i class="fa fa-lg fa-home" aria-hidden="true"></i>  <span class="text-uppercase">List Of All Students Scores</span><span class="small"></span></h4>
-                  </div>
+                    <div class="card-header">
+                        <h4><i class="fa fa-lg fa-home" aria-hidden="true"></i> <span class="text-uppercase">List Of All
+                                Students Scores</span><span class="small"></span></h4>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -48,9 +49,9 @@ if(isset($_GET['id'])){
                                                 $overAll = $s_row['overAll'];
                                                 $i++;
                                                 ?>
-                                                <tr>
-                                                    <td><?php echo $i; ?></td>
-                                                    <?php
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <?php
                                                     // get Result
                                                     $c_query = "SELECT * FROM students WHERE id = $st_id";
                                                     // Get result
@@ -70,14 +71,14 @@ if(isset($_GET['id'])){
                                                         die("QUERY FAILED". mysqli_error($connection));
                                                         }
                                                         while($row = $st_class->fetch_assoc()){ ?>
-                                                    <td class=""><?php echo $st_class_name ?></td>
-                                                        <?php } ?>
-                                                    <td class="text-capitalize"><?php echo $st_full_name; ?></td>
-                                                    <?php endwhile ?>
-                                                    <td><?php echo $s_course_title; ?></td>
-                                                    <td><?php echo $score; ?>/<?php echo $overAll; ?></td>
-                                                    <td><?php echo $overAll; ?></td>
-                                                </tr>
+                                                <td class=""><?php echo $st_class_name ?></td>
+                                                <?php } ?>
+                                                <td class="text-capitalize"><?php echo $st_full_name; ?></td>
+                                                <?php endwhile ?>
+                                                <td><?php echo $s_course_title; ?></td>
+                                                <td><?php echo $score; ?>/<?php echo $overAll; ?></td>
+                                                <td><?php echo $overAll; ?></td>
+                                            </tr>
                                             <?php }?>
                                         </tbody>
                                     </table>
@@ -103,79 +104,79 @@ if(isset($_GET['id'])){
 
             ?>
 
-            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="false">
-                <div class="modal-dialog">
-                    <!--        modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete Score</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <h5>Are you Sure You Want To Delete This Student Score?</h5>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="" class="btn btn-danger modal_delete_link">Delete</a>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="false">
+    <div class="modal-dialog">
+        <!--        modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Score</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-        <?php include "includes/footer.php"?>
+            <div class="modal-body">
+                <h5>Are you Sure You Want To Delete This Student Score?</h5>
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn btn-danger modal_delete_link">Delete</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include "includes/footer.php"?>
 <script>
-    $(document).ready(function(){
-        $(".delete_link").on('click', function(){
-            var id = $(this).attr("rel");
-            var st_id = $(this).attr("name");
-            var delete_url = "scores.php?delete="+ id +"&st_id="+ st_id +" ";
-            $(".modal_delete_link").attr("href", delete_url);
-            $("#myModal").modal('show');
-        });
+$(document).ready(function() {
+    $(".delete_link").on('click', function() {
+        var id = $(this).attr("rel");
+        var st_id = $(this).attr("name");
+        var delete_url = "scores.php?delete=" + id + "&st_id=" + st_id + " ";
+        $(".modal_delete_link").attr("href", delete_url);
+        $("#myModal").modal('show');
     });
+});
 </script>
 
 <script type="text/javascript">
-        $(document).ready(function() {
-            $("#showUpload").click(function(){
-                $("#upload").toggle("slow");
-            });
+$(document).ready(function() {
+    $("#showUpload").click(function() {
+        $("#upload").toggle("slow");
+    });
 
-            $('#documents').DataTable( {
-                "lengthMenu": [ 50, 100, 150, 200, 250, 300],
-                dom: 'Blfrtip',
-                buttons: [
-                    // 'copy', 'csv', 'excel', 'pdf', 'print'
+    $('#documents').DataTable({
+        "lengthMenu": [50, 100, 150, 200, 250, 300],
+        dom: 'Blfrtip',
+        buttons: [
+            // 'copy', 'csv', 'excel', 'pdf', 'print'
 
-                    {
-                        extend: 'excel',
-                        title: '<?php echo $sub." on ". $s_course_title?>',
-                        exportOptions: {
-                            columns: [1,2,3,4,5]
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        title: '<?php echo $sub." on ".$s_course_title ?>',
-                        exportOptions: {
-                            columns: [1,2,3,4,5] // indexes of the columns that should be printed,
-                        }                      // Exclude indexes that you don't want to print.
-                    },
-                    {
-                        extend: 'csv',
-                        title: '<?php echo $sub." on ".$s_course_title ?>',
-                        exportOptions: {
-                            columns: [1,2,3,4,5]
-                        }
+            {
+                extend: 'excel',
+                title: '<?php echo "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA.". " ". $sub." on ". $s_course_title?>',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5]
+                }
+            },
+            {
+                extend: 'pdf',
+                title: '<?php echo "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA.". " ". $sub." on ". $s_course_title?>',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5] // indexes of the columns that should be printed,
+                } // Exclude indexes that you don't want to print.
+            },
+            {
+                extend: 'csv',
+                title: '<?php echo "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA.". " ". $sub." on ". $s_course_title?>',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5]
+                }
 
-                    },
-                    {
-                        extend: 'print',
-                        title: '<?php echo $sub." on ".$s_course_title ?>',
-                        exportOptions:{
-                            columns: [1,2,3,4,5]
-                        }
-                    }
-                ]
-            } );
-        } );
-    </script>
+            },
+            {
+                extend: 'print',
+                title: '<?php echo "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA.". " ". $sub." on ". $s_course_title?>',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5]
+                }
+            }
+        ]
+    });
+});
+</script>

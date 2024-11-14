@@ -84,8 +84,8 @@ if(isset($_POST['addCourse'])) {
                                     $cl_id = $row['id'];
                                     $name = $row['name'];
                                     ?>
-                                    <option  value="subjects_scores.php?id=<?php echo $cl_id ?>"><?php echo $name ?></option>
-                                    <?php } ?>
+                                <option value="subjects_scores.php?id=<?php echo $cl_id ?>"><?php echo $name ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </form>
@@ -93,14 +93,14 @@ if(isset($_POST['addCourse'])) {
             </div>
             <div class="col-12">
                 <div class="card">
-                  <div class="card-header">
-                  <?php
+                    <div class="card-header">
+                        <?php
                         if(isset($_GET['id'])){ ?>
-                            <h3 class="text-uppercase">LIST OF <?php echo $class['name'] ?>  EXAMS SCORES</h3>
-                    <?php } else{ ?>
-                            <h3 class="text-uppercase">LIST OF ALL CLASS EXAMS SCORES</h3>
-                    <?php } ?>
-                  </div>
+                        <h3 class="text-uppercase">LIST OF <?php echo $class['name'] ?> EXAMS SCORES</h3>
+                        <?php } else{ ?>
+                        <h3 class="text-uppercase">LIST OF ALL CLASS EXAMS SCORES</h3>
+                        <?php } ?>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -132,7 +132,7 @@ if(isset($_POST['addCourse'])) {
                                                 ?>
                                             <tr>
 
-                                                
+
                                                 <?php
                                                 $query = "SELECT name FROM class WHERE id = $c_id";
                                                 $result = $mysqli->query($query) or die($mysqli->error);
@@ -144,15 +144,17 @@ if(isset($_POST['addCourse'])) {
                                                 <td><?php echo $row['course_title'] ?></td>
                                                 <td><?php echo $row['year'] ?></td>
                                                 <td><?php echo $row['exam_time'] ?> minutes</td>
-                                            <td><a class="btn btn-success btn-xs" href="sub_score.php?id=<?php echo $row['id'] ?>">View Scores</a></td>
+                                                <td><a class="btn btn-success btn-xs"
+                                                        href="sub_score.php?id=<?php echo $row['id'] ?>">View Scores</a>
+                                                </td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
                                     <?php if($select_courses_query->num_rows == 0){ ?>
-                                        <div class="alert alert-info">
-                                            <p>No Class Exam Has Been Added Yet</p>
-                                        </div>
+                                    <div class="alert alert-info">
+                                        <p>No Class Exam Has Been Added Yet</p>
+                                    </div>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -173,21 +175,21 @@ $reset_query = mysqli_query($connection, $query);
 header("Location: subjects.php");
 }
 ?>
-<?php include "includes/footer.php"?>     
+<?php include "includes/footer.php"?>
 <script>
-    $(document).ready(function(){
-        $(".classSelect").change(function () {
-            className = $(this).children(':selected').text();
-            $(this).next('input').val(className);
-        });
-        $(".delete_link").on('click', function(){
-            var id = $(this).attr("rel");
-            var delete_url = "students.php?delete="+ id +" ";
-            $(".modal_delete_link").attr("href", delete_url);
-            $("#myModal").modal('show');
-        });
-        $('#documents').DataTable( {
-            "lengthMenu": [ 50, 100, 150, 200],
-        } );
+$(document).ready(function() {
+    $(".classSelect").change(function() {
+        className = $(this).children(':selected').text();
+        $(this).next('input').val(className);
     });
+    $(".delete_link").on('click', function() {
+        var id = $(this).attr("rel");
+        var delete_url = "students.php?delete=" + id + " ";
+        $(".modal_delete_link").attr("href", delete_url);
+        $("#myModal").modal('show');
+    });
+    $('#documents').DataTable({
+        "lengthMenu": [50, 100, 150, 200],
+    });
+});
 </script>

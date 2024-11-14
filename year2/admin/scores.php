@@ -8,7 +8,8 @@ $class_result = $mysqli->query($class_query) or die($mysqli->error);
 $class_data = $class_result->fetch_assoc();
 $class_name = $class_data['name'];
 
-$sub = "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA                                   $class_name Student Scores";
+$sub = "MILLENNIUM COLLEGE OF NURSING SCIENCES, AWKA 
+$class_name Student Scores";
 $sub = htmlspecialchars($sub, ENT_QUOTES, 'UTF-8'); 
 
 ?>
